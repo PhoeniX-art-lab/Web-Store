@@ -1,0 +1,110 @@
+.navbar {
+    overflow: hidden;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.right-side {
+    float: right;
+}
+
+.navigation{
+    display: block;
+    font-family: sans-serif;
+    color: #3c4043;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+
+.navigation:hover {
+    background-color: #f5f5f5;
+}
+
+.navbar .logo {
+    width: 20%;
+    height: 20%;
+    padding: 5px 10px;
+    float: left;
+}
+
+.navbar .left-side {
+    float: left;
+}
+
+.main {
+    padding: 16px;
+    margin-top: 30px;
+    font-family: sans-serif;
+}
+
+.drone-main-image {
+    width: 70%;
+    height: 70%;
+    display: block;
+    margin: 0 auto;
+}
+
+.button {
+    display: inline-block;
+    padding: 14px 14px;
+    background-color: #323435;
+    color: white;
+    overflow: hidden;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.button:hover {
+    background-color: #4c4f51;
+}
+
+.button-link {
+    color: #1890ff;
+    padding-right: 10px;
+    float: right;
+}
+
+.button-link a {
+    color: #1890ff;
+    text-decoration: none;
+}
+
+.button-link a:hover {
+    text-decoration: underline;
+}
+
+.image-left-side {
+    width: 50%;
+    height: 50%;
+    display: block;
+    margin: 0 auto;
+}
+
+.non-bullet {
+    list-style-type: none;
+}
+
+.cards-grid {
+    margin-top: 30px;
+    display: grid;
+    gap: 40px;
+    grid-template-columns: repeat(3, 440px);
+    grid-auto-rows: 560px;
+}
+
+.content {
+    margin: 50px
+}
+
+.content .text {
+    text-align: center;
+}
+
+.footer {
+    padding-top: 100px;
+    text-align: center;
+}

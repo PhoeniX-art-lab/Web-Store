@@ -1,0 +1,44 @@
+{% load static %}
+{% load store_tags %}
+{% get_all_categories as cats %}
+{% get_all_products cat_id=cat_selected as products %}
+{% get_menu as menu %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link type="text/css" href="{% static 'store/css/styles.css' %}" rel="stylesheet">
+    <link type="image/x-icon" href="{% static 'store/images/logo.png' %}" rel="icon">
+</head>
+<body>
+
+{% block main-menu %}
+<header>
+    <nav class="navbar">
+        <a href="{% url 'home' %}"  class="left-side">
+            <img src="{% static 'store/images/logo1.png' %}" class="logo">
+        </a>
+        {% for i in menu %}
+        <a href="{% url i.url_name %}" class="navigation right-side">{{i.title}}</a>
+        {% endfor %}
+        <a href="{% url 'home' %}" class="navigation left-side">All categories</a>
+        {% for c in cats %}
+        <a href="{{c.get_absolute_url}}" class="navigation left-side">{{c.name}}</a>
+        {% endfor %}
+    </nav>
+</header>
+{% endblock main-menu %}
+
+<div class="main" style="color: #3c4043">
+    {% block content %}
+    {% endblock %}
+
+    <footer class="footer">
+        Copyright &copy; 2022 Dji Store All Rights Reserved
+    </footer>
+</div>
+
+</body>
+</html>

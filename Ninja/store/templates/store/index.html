@@ -1,0 +1,35 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<h1 style="font-size: 100px" align="center">{{title}}</h1>
+<img src="{% static 'store/images/Dron.png' %}" class="drone-main-image">
+<ul class="cards-grid">
+
+    {% for p in products %}
+    <li class="non-bullet">
+        <div>
+            <h2 align="center">{{p.product_name}}</h2>
+            {% if p.product_image %}
+            <img class="image-left-side" src="{{p.product_image.url}}" alt="">
+            {% endif %}
+            <div class="content">
+                <div class="text">
+                    {{p.product_content|linebreaks}}
+                </div>
+                <p>
+                    USD ${{p.product_price}}
+                    <span class="button-link">
+                        <a href="{{p.get_absolute_url}}">Learn more</a> >
+                    </span>
+                </p>
+                <a href="#" class="button">Buy Now</a>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+
+</ul>
+
+{% endblock %}
