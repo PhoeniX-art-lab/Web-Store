@@ -1779,71 +1779,103 @@ model</ColNames>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <index id="589" parent="494" name="store_category_name_150032c6">
+    <column id="589" parent="494" name="slug">
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+    </column>
+    <index id="590" parent="494" name="sqlite_autoindex_store_category_1">
+      <ColNames>slug</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <index id="591" parent="494" name="store_category_name_150032c6">
       <ColNames>name</ColNames>
     </index>
-    <key id="590" parent="494">
+    <key id="592" parent="494">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="591" parent="495" name="id">
+    <key id="593" parent="494">
+      <ColNames>slug</ColNames>
+      <UnderlyingIndexName>sqlite_autoindex_store_category_1</UnderlyingIndexName>
+    </key>
+    <column id="594" parent="495" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="592" parent="495" name="product_name">
+    <column id="595" parent="495" name="product_name">
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="593" parent="495" name="product_content">
-      <DataType>TEXT|0s</DataType>
+    <column id="596" parent="495" name="slug">
+      <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="594" parent="495" name="product_image">
-      <DataType>varchar(100)|0s</DataType>
+    <column id="597" parent="495" name="product_content">
+      <DataType>TEXT|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="595" parent="495" name="time_create">
-      <DataType>datetime|0s</DataType>
-      <NotNull>1</NotNull>
+    <column id="598" parent="495" name="product_characteristics">
+      <DataType>TEXT|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="596" parent="495" name="time_update">
-      <DataType>datetime|0s</DataType>
+    <column id="599" parent="495" name="product_image">
+      <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="597" parent="495" name="product_price">
-      <DataType>INTEGER|0s</DataType>
+    <column id="600" parent="495" name="time_create">
+      <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="598" parent="495" name="is_published">
-      <DataType>bool|0s</DataType>
+    <column id="601" parent="495" name="time_update">
+      <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
     </column>
-    <column id="599" parent="495" name="cat_id">
-      <DataType>bigint|0s</DataType>
+    <column id="602" parent="495" name="product_price">
+      <DataType>INTEGER|0s</DataType>
+      <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
-    <foreign-key id="600" parent="495">
-      <ColNames>cat_id</ColNames>
+    <column id="603" parent="495" name="is_published">
+      <DataType>bool|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>10</Position>
+    </column>
+    <column id="604" parent="495" name="category_id">
+      <DataType>bigint|0s</DataType>
+      <Position>11</Position>
+    </column>
+    <foreign-key id="605" parent="495">
+      <ColNames>category_id</ColNames>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
       <RefColNames>id</RefColNames>
       <RefTableName>store_category</RefTableName>
     </foreign-key>
-    <index id="601" parent="495" name="store_store_cat_id_63b1aef2">
-      <ColNames>cat_id</ColNames>
+    <index id="606" parent="495" name="sqlite_autoindex_store_store_1">
+      <ColNames>slug</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
     </index>
-    <key id="602" parent="495">
+    <index id="607" parent="495" name="store_store_category_id_7b2fa918">
+      <ColNames>category_id</ColNames>
+    </index>
+    <key id="608" parent="495">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+    </key>
+    <key id="609" parent="495">
+      <ColNames>slug</ColNames>
+      <UnderlyingIndexName>sqlite_autoindex_store_store_1</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>

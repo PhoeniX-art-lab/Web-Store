@@ -11,8 +11,8 @@ def get_all_categories():
 
 
 @register.simple_tag
-def get_all_products(cat_id=None):
-    return Store.objects.all() if not cat_id else Store.objects.filter(cat_id=cat_id)
+def get_all_products(category_id=None):
+    return Store.objects.all() if not category_id else Store.objects.filter(category_id=category_id)
 
 
 @register.simple_tag

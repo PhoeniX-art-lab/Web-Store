@@ -6,6 +6,6 @@ urlpatterns = [
     path("about/", about, name='about'),
     path("support/", support, name='support'),
     path("login/", login, name='login'),
-    path("information/<int:info_id>/", show_info, name='information'),
-    path("categories/<int:cat_id>/", show_categories, name='categories'),
+    path("information/<slug:info_slug>/", show_info, name='information'),
+    path("categories/<slug:cat_slug>/", show_categories, name='categories'),
 ]

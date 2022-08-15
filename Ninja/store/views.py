@@ -1,7 +1,7 @@
 from typing import Any
 
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, HttpResponseServerError
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .models import Store, Category
 
@@ -19,11 +19,11 @@ def index(request: Any) -> HttpResponse:
     return render(request, 'store/index.html', context=context)
 
 
-def show_categories(request: Any, cat_id: int) -> HttpResponse:
+def show_categories(request: Any, cat_slug: str) -> HttpResponse:
     context = {
-        'title': 'Camera Drones' if cat_id == 1 else 'Handheld',
+        'title': 'Camera Drones' if cat_slug == 'camera-drones' else 'Handheld',
         # 'menu': menu,
-        'cat_selected': cat_id
+        'cat_selected': Category.objects.get(slug=cat_slug).pk
     }
     return render(request, 'store/index.html', context=context)
 
@@ -49,8 +49,14 @@ def login(request: Any) -> HttpResponse:
     return render(request, 'store/login.html', context=None)
 
 
-def show_info(request: Any, info_id) -> HttpResponse:
-    return HttpResponse(f"Page with id = {info_id}")
+def show_info(request: Any, info_slug: str) -> HttpResponse:
+    information = get_object_or_404(Store, slug=info_slug)
+    context = {
+        'title': information.product_name,
+        'information': information,
+        'cat_selected': information.category_id
+    }
+    return render(request, 'store/object_information.html', context=context)
 
 
 def pageNotFound(request: Any, exception) -> HttpResponseNotFound:
