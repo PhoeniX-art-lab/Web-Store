@@ -1,8 +1,11 @@
 from typing import Any
 
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, HttpResponseServerError
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.core.mail import send_mail
+from django.conf import settings
 
+from .forms import SupportForm
 from .models import Store, Category
 
 menu = [{"title": "Login", "url_name": "login"},
@@ -13,7 +16,6 @@ menu = [{"title": "Login", "url_name": "login"},
 def index(request: Any) -> HttpResponse:
     context = {
         'title': 'Dji Store',
-        # 'menu': menu,
         'cat_selected': None
     }
     return render(request, 'store/index.html', context=context)
@@ -29,24 +31,30 @@ def show_categories(request: Any, cat_slug: str) -> HttpResponse:
 
 
 def about(request: Any) -> HttpResponse:
-    # context = {
-    #     'menu': menu
-    # }
-    return render(request, 'store/about.html', context=None)
+    return render(request, 'store/about.html', context={'title': 'About'})
 
 
 def support(request: Any) -> HttpResponse:
-    # context = {
-    #     'menu': menu
-    # }
-    return render(request, 'store/support.html', context=None)
+    if request.method == 'POST':
+        form = SupportForm(request.POST)
+        if form.is_valid():
+            issue_type = form.cleaned_data['issue_type']
+            email = form.cleaned_data['email']
+            text = form.cleaned_data['text']
+            send_mail(f'{issue_type} from {email}', text, settings.DEFAULT_FROM_EMAIL, settings.RECIPIENTS_EMAIL)
+            return redirect('success')
+    else:
+        form = SupportForm()
+
+    return render(request, 'store/support.html', context={'form': form, 'title': 'Support'})
+
+
+def success_view(request: Any) -> HttpResponse:
+    return HttpResponse("Thank you for your request, we will reply to you soon")
 
 
 def login(request: Any) -> HttpResponse:
-    # context = {
-    #     'menu': menu
-    # }
-    return render(request, 'store/login.html', context=None)
+    return render(request, 'store/login.html', context={'title': 'Login'})
 
 
 def show_info(request: Any, info_slug: str) -> HttpResponse:

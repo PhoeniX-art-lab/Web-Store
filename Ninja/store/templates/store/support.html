@@ -2,8 +2,27 @@
 
 {% block content %}
 
-<h3>Contact Us</h3>
+<h2>Contact Us</h2>
 <p>Mobile phone: +1 818 235 0789</p>
 <p>Email: djisupport@gmail.com</p>
+
+<div class="container">
+    <form action="{% url 'support' %}" method="POST">
+        {% csrf_token %}
+        {% for f in form %}
+        <div class="row">
+            <div class="col-25">
+                <label for="{{f.id_for_label}}">{{f.label}}</label>
+            </div>
+            <div class="col-75">
+                {{f}}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="row">
+            <button type="submit">Send</button>
+        </div>
+    </form>
+</div>
 
 {% endblock content %}
