@@ -1,12 +1,12 @@
 from django.urls import path
-from store.views import index, about, support, login, show_info, show_categories, success_view
+from store.views import *
 
 urlpatterns = [
-    path("", index, name='home'),
+    path("", HomeStore.as_view(), name='home'),
     path("about/", about, name='about'),
-    path("support/", support, name='support'),
+    path("support/", SupportStore.as_view(), name='support'),
     path("support/success/", success_view, name='success'),
     path("login/", login, name='login'),
-    path("information/<slug:info_slug>/", show_info, name='information'),
-    path("categories/<slug:cat_slug>/", show_categories, name='categories'),
+    path("information/<slug:info_slug>/", InformationStore.as_view(), name='information'),
+    path("categories/<slug:cat_slug>/", CategoriesStore.as_view(), name='categories'),
 ]

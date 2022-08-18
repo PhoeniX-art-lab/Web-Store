@@ -4,6 +4,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, HttpRes
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import send_mail
 from django.conf import settings
+from django.views.generic import ListView, FormView, DetailView
 
 from .forms import SupportForm
 from .models import Store, Category
@@ -13,40 +14,48 @@ menu = [{"title": "Login", "url_name": "login"},
         {"title": "About", "url_name": "about"}]
 
 
-def index(request: Any) -> HttpResponse:
-    context = {
-        'title': 'Dji Store',
-        'cat_selected': None
-    }
-    return render(request, 'store/index.html', context=context)
+class HomeStore(ListView):
+    model = Store
+    template_name = 'store/index.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(HomeStore, self).get_context_data(**kwargs)
+        context['title'] = 'Dji Store'
+        context['cat_selected'] = None
+        return context
 
 
-def show_categories(request: Any, cat_slug: str) -> HttpResponse:
-    context = {
-        'title': 'Camera Drones' if cat_slug == 'camera-drones' else 'Handheld',
-        # 'menu': menu,
-        'cat_selected': Category.objects.get(slug=cat_slug).pk
-    }
-    return render(request, 'store/index.html', context=context)
+class CategoriesStore(ListView):
+    model = Store
+    template_name = 'store/index.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(CategoriesStore, self).get_context_data(**kwargs)
+        context['title'] = 'Camera Drones' if self.kwargs['cat_slug'] == 'camera-drones' else 'Handheld'
+        context['cat_selected'] = Category.objects.get(slug=self.kwargs['cat_slug']).pk
+        return context
 
 
 def about(request: Any) -> HttpResponse:
     return render(request, 'store/about.html', context={'title': 'About'})
 
 
-def support(request: Any) -> HttpResponse:
-    if request.method == 'POST':
-        form = SupportForm(request.POST)
-        if form.is_valid():
-            issue_type = form.cleaned_data['issue_type']
-            email = form.cleaned_data['email']
-            text = form.cleaned_data['text']
-            send_mail(f'{issue_type} from {email}', text, settings.DEFAULT_FROM_EMAIL, settings.RECIPIENTS_EMAIL)
-            return redirect('success')
-    else:
-        form = SupportForm()
+class SupportStore(FormView):
+    form_class = SupportForm
+    template_name = 'store/support.html'
+    success_url = 'success'
 
-    return render(request, 'store/support.html', context={'form': form, 'title': 'Support'})
+    def get_context_data(self, **kwargs):
+        context = super(SupportStore, self).get_context_data(**kwargs)
+        context['title'] = 'Support'
+        return context
+
+    def form_valid(self, form):
+        issue_type = form.cleaned_data['issue_type']
+        email = form.cleaned_data['email']
+        text = form.cleaned_data['text']
+        send_mail(f'{issue_type} from {email}', text, settings.DEFAULT_FROM_EMAIL, settings.RECIPIENTS_EMAIL)
+        return super(SupportStore, self).form_valid(form)
 
 
 def success_view(request: Any) -> HttpResponse:
@@ -57,14 +66,16 @@ def login(request: Any) -> HttpResponse:
     return render(request, 'store/login.html', context={'title': 'Login'})
 
 
-def show_info(request: Any, info_slug: str) -> HttpResponse:
-    information = get_object_or_404(Store, slug=info_slug)
-    context = {
-        'title': information.product_name,
-        'information': information,
-        'cat_selected': information.category_id
-    }
-    return render(request, 'store/object_information.html', context=context)
+class InformationStore(DetailView):
+    model = Store
+    template_name = 'store/object_information.html'
+    slug_url_kwarg = 'info_slug'
+    context_object_name = 'information'
+
+    def get_context_data(self, **kwargs):
+        context = super(InformationStore, self).get_context_data(**kwargs)
+        context['title'] = context['information']
+        return context
 
 
 def pageNotFound(request: Any, exception) -> HttpResponseNotFound:
