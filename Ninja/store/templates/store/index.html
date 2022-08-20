@@ -8,6 +8,7 @@
 <ul class="cards-grid">
 
     {% for p in products %}
+    {% if p.is_published %}
     <li class="non-bullet">
         <div>
             <h2 align="center">{{p.product_name}}</h2>
@@ -28,6 +29,7 @@
             </div>
         </div>
     </li>
+    {% endif %}
     {% endfor %}
 
 </ul>
