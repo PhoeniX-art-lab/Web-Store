@@ -171,3 +171,23 @@
         margin-top: 0;
     }
 }
+
+.information-flex {
+    display: flex;
+    width: 1200px;
+    margin: auto;
+}
+
+.information-image {
+    float: left;
+    width: 90%;
+    height: 90%;
+}
+
+.information-flex .price {
+    margin-left: 30px;
+}
+
+.information-body {
+    margin-top: 50px;
+}

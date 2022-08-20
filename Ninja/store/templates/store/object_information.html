@@ -1,27 +1,27 @@
 {% extends 'store/base.html' %}
-
+{% load store_tags %}
 {% block content %}
 
-<h2>This information is temp used</h2>
+<!--For normal text-->
 
-<div>
-    <h2 align="center">{{information.product_name}}</h2>
-    {% if information.product_image %}
-    <img class="image-left-side" src="{{information.product_image.url}}" alt="">
-    {% endif %}
-    <div class="content">
-        <div class="text">
-            {{information.product_content|linebreaks}}
+<body class="information-body">
+<h1>{{information.product_name}}</h1>
+<div class="information-flex">
+    <div>
+        {% if information.product_image %}
+        <img class="information-image" src="{{information.product_image.url}}">
+        {% endif %}
+    </div>
+    <div>
+        {{ information.product_characteristics|markdown}}
+        <div class="price">
+            <div>
+                USD ${{information.product_price}}
+            </div>
+            <a href="#" class="button">Buy Now</a>
         </div>
-        <p>
-            USD ${{information.product_price}}
-            <span class="button-link">
-                        <a href="{{information.get_absolute_url}}">Learn more</a> >
-                    </span>
-        </p>
-        <a href="#" class="button">Buy Now</a>
     </div>
 </div>
-
+</body>
 
 {% endblock %}
