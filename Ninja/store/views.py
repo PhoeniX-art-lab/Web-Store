@@ -8,47 +8,44 @@ from django.views.generic import ListView, FormView, DetailView
 
 from .forms import SupportForm
 from .models import Store, Category
-
-menu = [{"title": "Login", "url_name": "login"},
-        {"title": "Support", "url_name": "support"},
-        {"title": "About", "url_name": "about"}]
+from .utils import DataMixin
 
 
-class HomeStore(ListView):
+class HomeStore(DataMixin, ListView):
     model = Store
     template_name = 'store/index.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(HomeStore, self).get_context_data(**kwargs)
-        context['title'] = 'Dji Store'
-        context['cat_selected'] = None
-        return context
+        data_context = self.get_user_context(title='Dji Store')
+        return context | data_context
 
 
-class CategoriesStore(ListView):
+class CategoriesStore(DataMixin, ListView):
     model = Store
     template_name = 'store/index.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(CategoriesStore, self).get_context_data(**kwargs)
-        context['title'] = 'Camera Drones' if self.kwargs['cat_slug'] == 'camera-drones' else 'Handheld'
-        context['cat_selected'] = Category.objects.get(slug=self.kwargs['cat_slug']).pk
-        return context
+        data_context = self.get_user_context(
+            title='Camera Drones' if self.kwargs['cat_slug'] == 'camera-drones' else 'Handheld',
+            cat_selected=Category.objects.get(slug=self.kwargs['cat_slug']).pk)
+        return context | data_context
 
 
 def about(request: Any) -> HttpResponse:
     return render(request, 'store/about.html', context={'title': 'About'})
 
 
-class SupportStore(FormView):
+class SupportStore(DataMixin, FormView):
     form_class = SupportForm
     template_name = 'store/support.html'
     success_url = 'success'
 
     def get_context_data(self, **kwargs):
         context = super(SupportStore, self).get_context_data(**kwargs)
-        context['title'] = 'Support'
-        return context
+        data_context = self.get_user_context(title='Support')
+        return context | data_context
 
     def form_valid(self, form):
         issue_type = form.cleaned_data['issue_type']
@@ -66,7 +63,7 @@ def login(request: Any) -> HttpResponse:
     return render(request, 'store/login.html', context={'title': 'Login'})
 
 
-class InformationStore(DetailView):
+class InformationStore(DataMixin, DetailView):
     model = Store
     template_name = 'store/object_information.html'
     slug_url_kwarg = 'info_slug'
@@ -74,8 +71,8 @@ class InformationStore(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(InformationStore, self).get_context_data(**kwargs)
-        context['title'] = context['information']
-        return context
+        data_context = self.get_user_context(title=context['information'])
+        return context | data_context
 
 
 def pageNotFound(request: Any, exception) -> HttpResponseNotFound:
