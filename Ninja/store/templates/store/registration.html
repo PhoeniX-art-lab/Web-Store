@@ -1,0 +1,28 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+
+<div class="page">
+    <div class="container-login">
+        <div class="left">
+            <div class="login">{{title}}</div>
+            <div class="eula">{{eula}}</div>
+            {% if title == "Login" %}
+            <div class="eula">Don't have an account? <span class="button-link"><a href="../register/">Sign up</a></span></div>
+            {% endif %}
+        </div>
+        <div class="right">
+            <form method="post" class="form">
+                {% csrf_token %}
+                <div class="form-error">{{ form.non_field_errors }}</div>
+                {% for f in form %}
+                <label for="{{f.id_for_label}}">{{f.label}}</label> {{f}}
+                <div class="form-error">{{ f.errors }}</div>
+                {% endfor %}
+                <input id="submit" type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

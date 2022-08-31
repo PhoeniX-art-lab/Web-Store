@@ -14,7 +14,7 @@ html, body {
     float: right;
 }
 
-.navigation{
+.navigation {
     display: block;
     font-family: sans-serif;
     color: #3c4043;
@@ -204,4 +204,17 @@ html, body {
 
 .information-body {
     margin-top: 50px;
+}
+
+.form-error {
+    position: fixed;
+    margin-left: 300px;
+    width: 20%;
+    top: 50%;
+}
+
+.form-error ul {
+    list-style: none;
+    padding: 0;
+    color: #CC0000;
 }

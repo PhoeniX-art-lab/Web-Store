@@ -1,12 +1,16 @@
 from typing import Any
 
+from django.contrib.auth import logout, login
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, HttpResponseServerError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import send_mail
 from django.conf import settings
-from django.views.generic import ListView, FormView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, FormView, DetailView, CreateView
 
-from .forms import SupportForm
+from .forms import SupportForm, UserRegistrationForm, LoginForm
 from .models import Store, Category
 from .utils import DataMixin
 
@@ -59,10 +63,6 @@ def success_view(request: Any) -> HttpResponse:
     return HttpResponse("Thank you for your request, we will reply to you soon")
 
 
-def login(request: Any) -> HttpResponse:
-    return render(request, 'store/login.html', context={'title': 'Login'})
-
-
 class InformationStore(DataMixin, DetailView):
     model = Store
     template_name = 'store/object_information.html'
@@ -73,6 +73,43 @@ class InformationStore(DataMixin, DetailView):
         context = super(InformationStore, self).get_context_data(**kwargs)
         data_context = self.get_user_context(title=context['information'])
         return context | data_context
+
+
+class UserRegistration(DataMixin, CreateView):
+    """Registration of users on the site"""
+    form_class = UserRegistrationForm
+    template_name = 'store/registration.html'
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(UserRegistration, self).get_context_data(**kwargs)
+        data_context = self.get_user_context(title='Sign Up', eula='By Signing up you agree to the ridiculously long '
+                                                                   'terms that you didn\'t bother to read')
+        return context | data_context
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('home')
+
+
+class LoginUser(DataMixin, LoginView):
+    """Login users in the site"""
+    form_class = LoginForm
+    template_name = 'store/login.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(LoginUser, self).get_context_data(**kwargs)
+        data_context = self.get_user_context(title='Login', eula='By continuing, you hereby agree to the Terms of use')
+        return context | data_context
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('home')
 
 
 def pageNotFound(request: Any, exception) -> HttpResponseNotFound:

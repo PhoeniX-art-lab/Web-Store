@@ -11,6 +11,7 @@
     <!--    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">-->
     <title>{{title}}</title>
     <link type="text/css" href="{% static 'store/css/styles.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'store/css/login.css' %}" rel="stylesheet">
     <link type="image/x-icon" href="{% static 'store/images/logo.png' %}" rel="icon">
 </head>
 <body>
@@ -23,7 +24,13 @@
                 <img src="{% static 'store/images/logo1.png' %}" class="logo">
             </a>
             {% for i in menu %}
+            {% if request.user.is_authenticated and i.title == "Login" %}
+            <div class="navigation right-side">
+                {{user.username}}|<span class="button-link"><a href="{% url 'logout' %}">Logout</a></span>
+            </div>
+            {% else %}
             <a href="{% url i.url_name %}" class="navigation right-side">{{i.title}}</a>
+            {% endif %}
             {% endfor %}
             <a href="{% url 'home' %}" class="navigation left-side">All categories</a>
             {% for c in cats %}

@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 
 
 class PlaceholderForm(forms.Form):
@@ -21,3 +23,14 @@ class SupportForm(PlaceholderForm):
         widget=forms.Textarea(attrs={'cols': 30, 'rows': 10}),
         label='Description of needs', help_text='Please give a description of your demand or problem'
     )
+
+
+class UserRegistrationForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2')
+
+
+class LoginForm(AuthenticationForm):
+    pass
