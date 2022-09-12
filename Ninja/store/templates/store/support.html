@@ -7,7 +7,7 @@
 <p>Email: djisupport@gmail.com</p>
 
 <div class="container">
-    <form action="{% url 'support' %}" method="POST">
+    <form action="{% url 'support' %}" method="post">
         {% csrf_token %}
         {% for f in form %}
         <div class="row">

@@ -10,6 +10,7 @@ from django.conf import settings
 from django.urls import reverse_lazy
 from django.views.generic import ListView, FormView, DetailView, CreateView
 
+from cart.forms import CartAddProductForm
 from .forms import SupportForm, UserRegistrationForm, LoginForm
 from .models import Store, Category
 from .utils import DataMixin
@@ -21,7 +22,7 @@ class HomeStore(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(HomeStore, self).get_context_data(**kwargs)
-        data_context = self.get_user_context(title='Dji Store')
+        data_context = self.get_user_context(title='Dji Store', cart_product_form=CartAddProductForm())
         return context | data_context
 
 
@@ -71,7 +72,8 @@ class InformationStore(DataMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(InformationStore, self).get_context_data(**kwargs)
-        data_context = self.get_user_context(title=context['information'])
+        data_context = self.get_user_context(title=context['information'], cart_product_form=CartAddProductForm())
+        print("Log note: ", context)
         return context | data_context
 
 

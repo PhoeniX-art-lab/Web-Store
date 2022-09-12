@@ -26,8 +26,11 @@
             {% for i in menu %}
             {% if request.user.is_authenticated and i.title == "Login" %}
             <div class="navigation right-side">
-                {{user.username}}|<span class="button-link"><a href="{% url 'logout' %}">Logout</a></span>
+               <span class="button-link"><a href="{% url 'cart:cart_detail' %}">{{user.username}}</a>|<a href="{% url 'logout' %}">Logout</a></span>
             </div>
+            {% elif i.title == "Login" %}
+            <a href="{% url i.url_name %}" class="navigation right-side">{{i.title}}</a>
+            <a href="{% url 'cart:cart_detail' %}" class="navigation right-side">Cart</a>
             {% else %}
             <a href="{% url i.url_name %}" class="navigation right-side">{{i.title}}</a>
             {% endif %}

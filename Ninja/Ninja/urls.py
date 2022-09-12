@@ -22,6 +22,7 @@ from store.views import pageNotFound, serverError
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("cart/", include("cart.urls", namespace="cart")),
     path("", include("store.urls"))
 ]
 

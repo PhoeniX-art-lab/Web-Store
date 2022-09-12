@@ -2,8 +2,6 @@
 {% load store_tags %}
 {% block content %}
 
-<!--For normal text-->
-
 <body class="information-body">
 <h1>{{information.product_name}}</h1>
 <div class="information-flex">
@@ -18,7 +16,12 @@
             <div>
                 USD ${{information.product_price}}
             </div>
-            <a href="#" class="button">Buy Now</a>
+            <form action="{% url 'cart:cart_add' information.id %}" method="post">
+                {% csrf_token %}
+                {{cart_product_form.update}}
+                <div class="quantity-index">{{cart_product_form.quantity}}</div>
+                <input type="submit" class="button" value="Buy Now">
+            </form>
         </div>
     </div>
 </div>

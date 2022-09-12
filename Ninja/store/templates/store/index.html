@@ -25,7 +25,12 @@
                         <a href="{{p.get_absolute_url}}">Learn more</a> >
                     </span>
                 </p>
-                <a href="#" class="button">Buy Now</a>
+                <form action="{% url 'cart:cart_add' p.id %}" method="post">
+                    {% csrf_token %}
+                    {{cart_product_form.update}}
+                    <div class="quantity-index">{{cart_product_form.quantity}}</div>
+                    <input type="submit" class="button" value="Buy Now">
+                </form>
             </div>
         </div>
     </li>
