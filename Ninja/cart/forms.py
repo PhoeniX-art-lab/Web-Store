@@ -11,3 +11,9 @@ class CartAddProductForm(forms.Form):
     update = forms.BooleanField(required=False,
                                 initial=False,
                                 widget=forms.HiddenInput)
+
+
+class CartOrderForm(forms.Form):
+    name = forms.CharField(max_length=20, help_text="Your name")
+    phone = forms.CharField()
+    address = forms.CharField(max_length=100)

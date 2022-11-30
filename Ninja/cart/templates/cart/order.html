@@ -1,0 +1,28 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block content %}
+<script src="{% static 'store/js/phoneinput.js' %}"></script>
+
+<div class="container">
+    <form action="{% url 'cart:cart_order' %}" method="post">
+        {% csrf_token %}
+        {% for f in form %}
+        <div class="row">
+            <div class="col-25">
+                <label for="{{f.id_for_label}}">{{f.label}}</label>
+            </div>
+            <div class="col-75" id="data-tel-input">
+                {{f}}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="row">
+            <button type="submit" class="button">Submit</button>
+        </div>
+    </form>
+</div>
+
+<!--<input type="tel" id="data-tel-input" placeholder="Phone" maxlength="19"/>-->
+
+{% endblock %}

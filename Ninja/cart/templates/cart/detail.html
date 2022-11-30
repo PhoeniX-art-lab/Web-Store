@@ -2,6 +2,11 @@
 {% load static %}
 
 {% block content %}
+
+{% if not cart %}
+<h1 align="center" style="margin-top: 10%;">Your cart is empty</h1>
+<img src="{% static 'store/images/empty-cart.png' %}" style="width: 15%; display: block; margin: 5% auto 0;">
+{% else %}
 <h1>Product Cart</h1>
 <table class="cart">
     <thead>
@@ -55,6 +60,7 @@
 </table>
 <p class="text-right">
     <a href="{% url 'home' %}" class="button">Back to Store</a>
-    <a href="#" class="button">Order Now</a>
+    <a href="{% url 'cart:cart_order' %}" class="button">Order Now</a>
 </p>
+{% endif %}
 {% endblock %}

@@ -20,8 +20,8 @@
     {% block main-menu %}
     <header>
         <nav class="navbar">
-            <a href="{% url 'home' %}" class="left-side">
-                <img src="{% static 'store/images/logo1.png' %}" class="logo">
+            <a href="{% url 'home' %}" class="">
+                <img src="{% static 'store/images/logo-21.png' %}" class="main-logo">
             </a>
             {% for i in menu %}
             {% if request.user.is_authenticated and i.title == "Login" %}
@@ -49,7 +49,7 @@
     </main>
 
     <footer class="footer">
-        Copyright &copy; 2022 Dji Store All Rights Reserved
+        Copyright &copy; 2022 Dash Store All Rights Reserved
     </footer>
 </div>
 

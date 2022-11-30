@@ -22,7 +22,7 @@ class HomeStore(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(HomeStore, self).get_context_data(**kwargs)
-        data_context = self.get_user_context(title='Dji Store', cart_product_form=CartAddProductForm())
+        data_context = self.get_user_context(title='Dash Store', cart_product_form=CartAddProductForm())
         return context | data_context
 
 
@@ -34,7 +34,8 @@ class CategoriesStore(DataMixin, ListView):
         context = super(CategoriesStore, self).get_context_data(**kwargs)
         data_context = self.get_user_context(
             title='Camera Drones' if self.kwargs['cat_slug'] == 'camera-drones' else 'Handheld',
-            cat_selected=Category.objects.get(slug=self.kwargs['cat_slug']).pk)
+            cat_selected=Category.objects.get(slug=self.kwargs['cat_slug']).pk,
+            cart_product_form=CartAddProductForm())
         return context | data_context
 
 
