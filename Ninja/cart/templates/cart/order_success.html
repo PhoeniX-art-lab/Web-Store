@@ -1,0 +1,11 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<p>Thanks for your order. An operator will contact you shortly.</p>
+<span class="button-link" style="float: left">
+    <a href="{% url 'home' %}">Back home</a>
+</span>
+
+{% endblock %}

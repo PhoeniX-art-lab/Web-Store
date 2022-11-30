@@ -1,7 +1,9 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.views.generic import FormView
+from django.core.mail import send_mail
+from django.conf import settings
+import copy
 
 from store.models import Store
 from .cart import Cart
@@ -41,18 +43,22 @@ def cart_detail(request):
 class CartOrder(FormView):
     form_class = CartOrderForm
     template_name = 'cart/order.html'
-    success_url = 'cart:success'
 
     def get_context_data(self, **kwargs):
         context = super(CartOrder, self).get_context_data(**kwargs)
         return context | {'title': 'Order'}
 
-    def form_valid(self, form):
-        name = form.cleaned_data['name']
-        phone = form.cleaned_data['phone']
-        address = form.cleaned_data['address']
-        return super(CartOrder, self).form_valid(form)
-
-
-def success_view(request) -> HttpResponse:
-    return HttpResponse("Thanks for your order. An operator will contact you shortly")
+    def post(self, request, *args, **kwargs):
+        user_data = request.POST.dict()
+        user_data.pop('csrfmiddlewaretoken', None)
+        cart = Cart(request)
+        order = []
+        for item in cart:
+            order.append(item)
+        for item in order:
+            product = Store.objects.filter(product_name=item['product']).first()
+            cart.remove(product)
+        order.append(copy.deepcopy(user_data))
+        print(order)
+        send_mail(f"Order from {user_data['name']}", str(order), settings.DEFAULT_FROM_EMAIL, settings.RECIPIENTS_EMAIL)
+        return render(request, 'cart/order_success.html', {"detail": order})
